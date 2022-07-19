@@ -55,13 +55,13 @@ jobs:
       - name: Terraform Init
         id: init
         run: |
-          cd ${{ github.workspace }}/data-terraform/ecs-metabase
+          cd data-terraform/ecs-metabase
           terraform init
       
       - name: Terraform Validate
         id: validate
         run: |
-          cd ${{ github.workspace }}/data-terraform/ecs-metabase
+          cd data-terraform/ecs-metabase
           terraform validate -no-color
       
       
