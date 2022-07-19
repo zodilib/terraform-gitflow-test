@@ -3,21 +3,39 @@ name: "Terraform"
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
-permissions:
-  id-token: write
-  contents: read
+      - 'TerraformDev'
+      - 'TerraformStage'
+      - 'main'
+
+
 
 jobs:
-  terraform:
-    name: "Terraform"
+  ecs_deployment_dev:
+    if: github.ref == 'refs/heads/TerraformDev'
+    name: "ECS Fargate Dev Deployment"
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: 'refs/heads/TerraformDev'
+
+      - id: tool-versions
+        name: Set tool versions
+        run: |
+          printf '::set-output name=terraform::%s\n' "$(<.terraform-version)"
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2.0.0
+        with:
+          terraform_version: "${{ steps.tool-versions.outputs.terraform }}"
+          terraform_wrapper: false
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@master
@@ -36,10 +54,14 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: |
+          cd ${{ github.workspace }}/data-terraform/ecs-metabase
+          terraform init
       
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: |
+          cd ${{ github.workspace }}/data-terraform/ecs-metabase
+          terraform validate -no-color
       
       

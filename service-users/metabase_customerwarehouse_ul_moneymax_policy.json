@@ -1,0 +1,93 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Athena",
+      "Effect": "Allow",
+      "Action": [
+        "athena:BatchGetNamedQuery",
+        "athena:BatchGetQueryExecution",
+        "athena:GetNamedQuery",
+        "athena:GetQueryExecution",
+        "athena:GetQueryResults",
+        "athena:GetQueryResultsStream",
+        "athena:GetWorkGroup",
+        "athena:ListDatabases",
+        "athena:ListDataCatalogs",
+        "athena:ListNamedQueries",
+        "athena:ListQueryExecutions",
+        "athena:ListTagsForResource",
+        "athena:ListWorkGroups",
+        "athena:ListTableMetadata",
+        "athena:StartQueryExecution",
+        "athena:StopQueryExecution",
+        "athena:CreatePreparedStatement",
+        "athena:DeletePreparedStatement",
+        "athena:GetPreparedStatement",
+        "athena:GetDataCatalog"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "Glue",
+      "Effect": "Allow",
+      "Action": [
+        "glue:BatchGetPartition",
+        "glue:GetColumnStatisticsForPartition",
+        "glue:GetColumnStatisticsForTable",
+        "glue:GetPartition",
+        "glue:GetPartitionIndexes",
+        "glue:GetPartitions",
+        "glue:GetResourcePolicy",
+        "glue:GetResourcePolicies",
+        "glue:GetUserDefinedFunction",
+        "glue:GetUserDefinedFunctions",
+        "glue:GetTable",
+        "glue:GetTables",
+        "glue:GetTableVersion",
+        "glue:GetTableVersions",
+        "glue:GetDatabase",
+        "glue:GetDatabases"
+      ],
+      "Resource": [
+        "arn:aws:glue:ap-southeast-1:${account}:catalog",
+        "arn:aws:glue:ap-southeast-1:${account}:database/customerwarehouse_ul_moneymax",
+        "arn:aws:glue:ap-southeast-1:${account}:table/customerwarehouse_ul_moneymax/*",
+        "arn:aws:glue:ap-southeast-1:${account}:tableVersion/customerwarehouse_ul_moneymax/*",
+        "arn:aws:glue:ap-southeast-1:${account}:table/default/customerwarehouse_ul_moneymax"
+      ]
+    },
+    {
+      "Sid": "GlueDefault",
+      "Effect": "Allow",
+      "Action": ["glue:GetDatabase", "glue:GetTable"],
+      "Resource": ["arn:aws:glue:ap-southeast-1:${account}:database/default"]
+    },
+    {
+      "Sid": "GlueExtraPermissions",
+      "Effect": "Allow",
+      "Action": [ "glue:GetTable", "glue:GetPartitions"],
+      "Resource": ["arn:aws:glue:ap-southeast-1:${account}:database/customerwarehouse_moneymax",
+      "arn:aws:glue:ap-southeast-1:${account}:table/customerwarehouse_moneymax",
+      "arn:aws:glue:ap-southeast-1:${account}:table/customerwarehouse_moneymax/*"
+      ]
+    },
+    {
+      "Sid": "S3ReadAccess",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:ListBucket", "s3:GetBucketLocation"],
+      "Resource": [
+        "arn:aws:s3:::${athena_bucket}",
+        "arn:aws:s3:::${athena_bucket}/*",
+        "arn:aws:s3:::${bucket_1}",
+        "arn:aws:s3:::${bucket_1}/*"
+      ]
+    },
+    {
+      "Sid": "AthenaResultsBucket",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:GetObject", "s3:AbortMultipartUpload", "s3:ListBucket", "s3:GetBucketLocation"],
+      "Resource": ["arn:aws:s3:::${athena_bucket}", "arn:aws:s3:::${athena_bucket}/*"]
+    }
+  ]
+}
