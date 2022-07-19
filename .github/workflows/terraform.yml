@@ -48,20 +48,10 @@ jobs:
         with:
           terraform_version: 1.0.9
 
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
-
-      - name: Terraform Init
-        id: init
+      - name: Path
+        id: show path
         run: |
-          cd data-terraform/ecs-metabase
-          terraform init
-      
-      - name: Terraform Validate
-        id: validate
-        run: |
-          cd data-terraform/ecs-metabase
-          terraform validate -no-color
+          echo pwd
+          ls -ltr
       
       
