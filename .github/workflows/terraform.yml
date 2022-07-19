@@ -54,5 +54,18 @@ jobs:
         run: |
           cd service-users
           terraform validate -no-color
+
+      - name: Terraform Workspace
+        id: workspace-dev
+        run: |
+          terraform workspace select dev
+
+      - name: Terraform Plan and Apply
+        id: terraform-plan-apply
+        run: |
+          terraform plan -var-file terraform_prod.tfvars -out terraform.out
+          terraform apply "terraform.out"
+
+          
           
       
