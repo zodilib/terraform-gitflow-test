@@ -48,10 +48,16 @@ jobs:
         with:
           terraform_version: 1.0.9
 
-      - name: Path
-        id: show-path
+      - name: Terraform Init
+        id: init
         run: |
-          echo pwd
-          ls -ltr
-      
+          cd service-users
+          terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: |
+          cd service-users
+          terraform validate -no-color
+          
       
