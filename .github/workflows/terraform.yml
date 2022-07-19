@@ -49,7 +49,7 @@ jobs:
           terraform_version: 1.0.9
 
       - name: Path
-        id: show path
+        id: show-path
         run: |
           echo pwd
           ls -ltr
