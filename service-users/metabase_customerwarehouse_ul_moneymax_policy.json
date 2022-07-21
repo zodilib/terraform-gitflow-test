@@ -77,11 +77,14 @@
       "Effect": "Allow",
       "Action": ["s3:GetObject", "s3:ListBucket", "s3:GetBucketLocation"],
       "Resource": [
-        "arn:aws:s3:::${athena_bucket}",
-        "arn:aws:s3:::${athena_bucket}/*",
         "arn:aws:s3:::${bucket_1}",
         "arn:aws:s3:::${bucket_1}/*"
-      ]
+      ],
+      "Condition": {
+        "ForAnyValue:StringEquals": {
+            "aws:CalledVia": ["athena.amazonaws.com"]
+        }
+      }
     },
     {
       "Sid": "AthenaResultsBucket",
