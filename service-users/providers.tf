@@ -11,5 +11,5 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
-  profile = "data-${var.env}"
+  #profile = "data-${var.env}"
 }
